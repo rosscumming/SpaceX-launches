@@ -1,3 +1,5 @@
+$navy: #015289;
+
 .nav {
   height: 4rem;
   border-bottom: 1px solid black;
@@ -19,5 +21,28 @@
     line-height: 1;
     padding-top: 0.9rem;
     font-size: 1.5 rem;
+  }
+}
+
+.nav__reload-button {
+  font-family: "Brandon Grotesque", sans-serif;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  right: 0;
+  bottom: 0;
+  background: $navy;
+  color: white;
+  height: 2.7rem;
+  border: 0;
+  padding: 0.7rem;
+  border-bottom-left-radius: 1.8rem;
+  border-top-left-radius: 1.8rem;
+  font-size: 1rem;
+  font-weight: 500;
+
+  .nav__reload-text {
+    padding: 0 0.7rem;
   }
 }

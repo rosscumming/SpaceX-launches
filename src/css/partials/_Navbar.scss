@@ -2,8 +2,6 @@ $navy: #015289;
 
 .nav {
   height: 4rem;
-  border-bottom: 1px solid black;
-  width: 100vw;
   display: flex;
   justify-content: left;
   align-items: center;
@@ -41,6 +39,7 @@ $navy: #015289;
   border-top-left-radius: 1.8rem;
   font-size: 1rem;
   font-weight: 500;
+  cursor: pointer;
 
   .nav__reload-text {
     padding: 0 0.7rem;

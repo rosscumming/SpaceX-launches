@@ -1,0 +1,23 @@
+.nav {
+  height: 4rem;
+  border-bottom: 1px solid black;
+  width: 100vw;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-direction: row;
+  position: relative;
+
+  .nav__logo {
+    height: 2rem;
+    margin-left: 2.2rem;
+  }
+
+  .nav__title {
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1;
+    padding-top: 0.9rem;
+    font-size: 1.5 rem;
+  }
+}

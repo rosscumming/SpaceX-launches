@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Sort from "../css/icons/sort.png";
+import { baseApiURL } from "../API/Api";
 
 const LaunchFilters = () => {
+  useEffect(() => {
+    baseApiURL();
+  });
+
   return (
     <div className="main__launchfilters">
       <select className="main__launchfilters-year--select">

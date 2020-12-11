@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 const LaunchItem = ({ launch }) => {
   return (
@@ -7,8 +8,8 @@ const LaunchItem = ({ launch }) => {
         <h1>{launch.flight_number}</h1>
         <h2> {launch.mission_name}</h2>
         <div>
-          <p>{launch.launch_date_unix}</p>
-          {/* <p>{launch.rocket.rocket_name}</p> */}
+          <p>{moment.unix(launch.launch_date_unix).format("DD/MM/YYYY")}</p>
+          <p>{launch.rocket_name}</p>
         </div>
       </li>
     </div>

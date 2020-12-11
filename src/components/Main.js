@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { BASE_API_URL } from "../API/Api";
 
 import LaunchHome from "../css/imgs/launch-home.png";
 import LaunchHome2x from "../css/imgs/launch-home@2x.png";
@@ -7,6 +9,21 @@ import LaunchFilters from "./LaunchFilters";
 import LaunchList from "./LaunchList";
 
 const Main = () => {
+  const [launches, setLaunches] = useState([]);
+
+  const fetchLaunches = async () => {
+    try {
+      const res = await axios.get(BASE_API_URL);
+      setLaunches(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLaunches();
+  });
+
   return (
     <main className="main">
       <picture className="main__launch-img">

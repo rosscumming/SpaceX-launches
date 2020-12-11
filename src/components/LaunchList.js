@@ -8,7 +8,14 @@ const LaunchList = ({ launches }) => {
         <li>Cannot find any launches</li>
       ) : (
         launches.map((launch) => {
-          return <LaunchItem launch={launch} key={launch.id} />;
+          return (
+            <LaunchItem
+              flightNumber={launch.flight_number}
+              missionName={launch.mission_name}
+              launchDate={launch.launch_date_unix}
+              rocketName={launch.rocket.rocket_name}
+            />
+          );
         })
       )}
     </ul>

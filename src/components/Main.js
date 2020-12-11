@@ -6,7 +6,6 @@ import LaunchHome2x from "../css/imgs/launch-home@2x.png";
 import LaunchHome3x from "../css/imgs/launch-home@3x.png";
 import LaunchFilters from "./LaunchFilters";
 import LaunchList from "./LaunchList";
-import LaunchItem from "./LaunchItem";
 
 const Main = () => {
   const [launches, setLaunches] = useState([]);
@@ -22,7 +21,7 @@ const Main = () => {
 
   useEffect(() => {
     fetchLaunches();
-  });
+  }, []);
 
   return (
     <main className="main">
@@ -34,7 +33,6 @@ const Main = () => {
       <div className="main__launchlist-container">
         <LaunchFilters launches={launches} />
         <LaunchList launches={launches} />
-        <LaunchItem launch={launches} />
       </div>
     </main>
   );

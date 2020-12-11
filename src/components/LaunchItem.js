@@ -1,15 +1,17 @@
 import React from "react";
 import moment from "moment";
 
-const LaunchItem = ({ launch }) => {
+const LaunchItem = ({ flightNumber, missionName, launchDate, rocketName }) => {
   return (
     <div className="main__launchitems-container">
       <li>
-        <h1>{launch.flight_number}</h1>
-        <h2> {launch.mission_name}</h2>
-        <div>
-          <p>{moment.unix(launch.launch_date_unix).format("DD/MM/YYYY")}</p>
-          <p>{launch.rocket_name}</p>
+        <h1>#{flightNumber}</h1>
+        <h2> {missionName}</h2>
+        <div className="main__launchitems-container-info">
+          <p className="main__launchitems-container-date">
+            {moment.unix(launchDate).format("Do MMM YYYY")}
+          </p>
+          <p className="main__launchitems-container-rocketname">{rocketName}</p>
         </div>
       </li>
     </div>

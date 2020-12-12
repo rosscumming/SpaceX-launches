@@ -3,9 +3,9 @@ import LaunchItem from "./LaunchItem";
 
 const LaunchList = ({ launches }) => {
   return (
-    <ul className="main__launchlist-container">
+    <ul className="main__launchlist">
       {launches && launches.length === 0 ? (
-        <li>Cannot find any launches</li>
+        <li>Loading launches...</li>
       ) : (
         launches.map((launch) => {
           return (
@@ -14,6 +14,7 @@ const LaunchList = ({ launches }) => {
               missionName={launch.mission_name}
               launchDate={launch.launch_date_unix}
               rocketName={launch.rocket.rocket_name}
+              key={launch.mission_name}
             />
           );
         })

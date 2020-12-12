@@ -6,6 +6,7 @@ import LaunchHome2x from "../css/imgs/launch-home@2x.png";
 import LaunchHome3x from "../css/imgs/launch-home@3x.png";
 import LaunchFilters from "./LaunchFilters";
 import LaunchList from "./LaunchList";
+import Navbar from "./Navbar";
 
 const Main = () => {
   const [launches, setLaunches] = useState([]);
@@ -14,9 +15,15 @@ const Main = () => {
     try {
       const { data } = await axios.get(BASE_API_URL);
       setLaunches(data);
+      // setIsLoading(true);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleReloadData = () => {
+    setLaunches([]);
+    fetchLaunches();
   };
 
   useEffect(() => {
@@ -24,17 +31,20 @@ const Main = () => {
   }, []);
 
   return (
-    <main className="main">
-      <picture className="main__launch-img">
-        <source srcSet={`${LaunchHome}, ${LaunchHome2x}, ${LaunchHome3x}`} />
-        <img src={LaunchHome} alt="rocket taking off to space" />
-      </picture>
+    <>
+      <Navbar handleReloadData={handleReloadData} />
+      <main className="main">
+        <picture className="main__launch-img">
+          <source srcSet={`${LaunchHome}, ${LaunchHome2x}, ${LaunchHome3x}`} />
+          <img src={LaunchHome} alt="rocket taking off to space" />
+        </picture>
 
-      <div className="main__launchlist-container">
-        <LaunchFilters launches={launches} />
-        <LaunchList launches={launches} />
-      </div>
-    </main>
+        <div className="main__launchlist-container">
+          <LaunchFilters launches={launches} />
+          <LaunchList launches={launches} />
+        </div>
+      </main>
+    </>
   );
 };
 

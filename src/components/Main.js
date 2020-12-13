@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { BASE_API_URL } from "../API/Api";
 import LaunchHome from "../css/imgs/launch-home.png";
@@ -10,56 +10,83 @@ import Navbar from "./Navbar";
 
 const Main = () => {
   const [launches, setLaunches] = useState([]);
-  const [filteredLaunches, setFilteredLaunches] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [launchYears, setLaunchYears] = useState([]);
+  const [sortOrder, setSortOrder] = useState("ASC");
+  // state for filter year
 
-  const filterByYear = (e) => {
-    setFilteredLaunches(e.target.value);
-  };
-
-  const fetchLaunches = async () => {
+  const fetchLaunches = useCallback(async () => {
+    setIsLoading(true);
     try {
       const { data } = await axios.get(BASE_API_URL);
+      setIsLoading(false);
+      setSortOrder("ASC");
       setLaunches(data);
       updateLaunchYears(data);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
+
+  // const filterByYear = () => {}
+  // process on Change
+  // set filter year
 
   const updateLaunchYears = (data) => {
-    const launchYears = [];
+    const allLaunchYears = data.map((launch) => launch.launch_year);
 
-    data.forEach((launch) => {
-      if (!launchYears.includes(launch.launch_year))
-        launchYears.push(launch.launch_year);
-    });
+    const launchYears = [...new Set(allLaunchYears)];
 
-    setLaunchYears([...launchYears]);
-    console.log(launchYears);
+    setLaunchYears(launchYears);
   };
 
-  const handleSortByDesc = () => {
-    const sortedLaunches = launches.sort((a, b) =>
-      a.launch_date_unix <= b.launch_date_unix ? 1 : -1
-    );
-    console.log(sortedLaunches);
-    setLaunches([...sortedLaunches]);
+  const toggleSortOrder = () => {
+    if (sortOrder === "ASC") {
+      setSortOrder("DESC");
+    } else {
+      setSortOrder("ASC");
+    }
   };
 
   const handleReloadData = () => {
-    setLaunches([]);
-    updateLaunchYears([]);
     fetchLaunches();
   };
 
   useEffect(() => {
+    setLaunches((prevLaunches) => {
+      let sortedLaunches = [];
+
+      if (sortOrder === "ASC") {
+        sortedLaunches = [
+          ...prevLaunches.sort((a, b) =>
+            a.launch_date_unix >= b.launch_date_unix ? 1 : -1
+          ),
+        ];
+      } else {
+        sortedLaunches = [
+          ...prevLaunches.sort((a, b) =>
+            a.launch_date_unix <= b.launch_date_unix ? 1 : -1
+          ),
+        ];
+      }
+      return sortedLaunches;
+    });
+  }, [sortOrder]);
+
+  useEffect(() => {
     fetchLaunches();
-  }, []);
+  }, [fetchLaunches]);
+
+  // const getFilteredlaunches = () =>{
+  //   // should probably use useReducer()
+  //   // look at the chosen filter year
+  //   // return launches for that year
+
+  // }
 
   return (
     <>
-      <Navbar handleReloadData={handleReloadData} />
+      <Navbar handleReloadData={handleReloadData} isLoading={isLoading} />
       <main className="main">
         <picture className="main__launch-img">
           <source srcSet={`${LaunchHome}, ${LaunchHome2x}, ${LaunchHome3x}`} />
@@ -68,12 +95,12 @@ const Main = () => {
 
         <div className="main__launchlist-container">
           <LaunchFilters
-            handleSortByDesc={handleSortByDesc}
-            filterByYear={filterByYear}
-            filteredLaunches={filteredLaunches}
+            toggleSortOrder={toggleSortOrder}
             launchYears={launchYears}
+            sortOrder={sortOrder}
           />
           <LaunchList launches={launches} />
+          {/* getFilteredlaunches() */}
         </div>
       </main>
     </>

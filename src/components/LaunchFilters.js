@@ -1,7 +1,17 @@
 import React from "react";
 import Sort from "../css/icons/sort.png";
 
-const LaunchFilters = ({ handleSortByDesc, filterByYear, launchYears }) => {
+const LaunchFilters = ({
+  toggleSortOrder,
+  filterByYear,
+  launchYears,
+  sortOrder,
+}) => {
+  const convertButtonSortText = {
+    ASC: "Sort Descending",
+    DESC: "Sort Ascending",
+  };
+
   return (
     <div className="main__launchfilters">
       <select
@@ -24,10 +34,12 @@ const LaunchFilters = ({ handleSortByDesc, filterByYear, launchYears }) => {
         )}
       </select>
       <button
-        onClick={() => handleSortByDesc()}
+        onClick={toggleSortOrder}
         className="main__launchfilters-year--sort"
       >
-        <p className="main__launchfilters-sort-button">Sort Descending</p>
+        <p className="main__launchfilters-sort-button">
+          {convertButtonSortText[sortOrder]}
+        </p>
         <img src={Sort} alt="sort launch list by ascending or descending"></img>
       </button>
     </div>

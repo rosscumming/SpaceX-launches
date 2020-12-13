@@ -10,19 +10,46 @@ import Navbar from "./Navbar";
 
 const Main = () => {
   const [launches, setLaunches] = useState([]);
+  const [filteredLaunches, setFilteredLaunches] = useState("");
+  const [launchYears, setLaunchYears] = useState([]);
+
+  const filterByYear = (e) => {
+    setFilteredLaunches(e.target.value);
+  };
 
   const fetchLaunches = async () => {
     try {
       const { data } = await axios.get(BASE_API_URL);
       setLaunches(data);
-      // setIsLoading(true);
+      updateLaunchYears(data);
     } catch (err) {
       console.log(err);
     }
   };
 
+  const updateLaunchYears = (data) => {
+    const launchYears = [];
+
+    data.forEach((launch) => {
+      if (!launchYears.includes(launch.launch_year))
+        launchYears.push(launch.launch_year);
+    });
+
+    setLaunchYears([...launchYears]);
+    console.log(launchYears);
+  };
+
+  const handleSortByDesc = () => {
+    const sortedLaunches = launches.sort((a, b) =>
+      a.launch_date_unix <= b.launch_date_unix ? 1 : -1
+    );
+    console.log(sortedLaunches);
+    setLaunches([...sortedLaunches]);
+  };
+
   const handleReloadData = () => {
     setLaunches([]);
+    updateLaunchYears([]);
     fetchLaunches();
   };
 
@@ -40,7 +67,12 @@ const Main = () => {
         </picture>
 
         <div className="main__launchlist-container">
-          <LaunchFilters launches={launches} />
+          <LaunchFilters
+            handleSortByDesc={handleSortByDesc}
+            filterByYear={filterByYear}
+            filteredLaunches={filteredLaunches}
+            launchYears={launchYears}
+          />
           <LaunchList launches={launches} />
         </div>
       </main>

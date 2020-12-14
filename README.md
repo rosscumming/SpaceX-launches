@@ -23,7 +23,7 @@ Due to time constaints, there is a lot that i'd like to have implemented.
 
 These include: 
 
-* Make the app responsive to work on all devices. Currently it's designed for desktop use.
+* Make the app more responsive to work on all devices. Currently it has very little/minor responsiveness - could do with more tweaks.
 * Look more into useReducer() / redux and try to implement this. I think this would work well with the order sorting and filtering.
 * Try making custom hooks to help keep single responsibility between functions and components.
 * Unit tests. Currently there are no unit tests for this application, having some tests would help prevent bugs and ensure the app works as intended.

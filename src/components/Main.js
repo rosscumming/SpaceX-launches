@@ -11,48 +11,65 @@ import Navbar from "./Navbar";
 const Main = () => {
   const [launches, setLaunches] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [launchYears, setLaunchYears] = useState([]);
+  const [yearsOfLaunch, setYearsOfLaunch] = useState([]);
   const [sortOrder, setSortOrder] = useState("ASC");
-  const [selectedYear, setSelectedYear] = useState("");
-  const [filteredLaunchYears, setFilteredLaunchYears] = useState([]);
-  // state for filter year
+  const [currentSelectedYear, setCurrentSelectedYear] = useState("All");
+  const [launchesToDisplay, setLaunchesToDisplay] = useState([]);
 
   const fetchLaunches = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data } = await axios.get(BASE_API_URL);
-      setIsLoading(false);
-      setSortOrder("ASC");
       setLaunches(data);
-      updateLaunchYears(data);
+      createListOfLaunchYears(data);
+      setLaunchesToDisplay(data);
+      setIsLoading(false);
     } catch (err) {
       console.error(err);
     }
   }, []);
 
-  const userSelectedYear = (e) => {
-    setSelectedYear(e.target.value);
+  const filterLaunchesToDisplay = () => {
+    const filteredLaunchesByYear =
+      currentSelectedYear === "All"
+        ? launches
+        : filterLaunchesByYear(currentSelectedYear);
+    const sortedLaunchesByYear = sortList(filteredLaunchesByYear);
+    setLaunchesToDisplay(sortedLaunchesByYear);
   };
 
-  const launchFilteredYears = (e) => {
-    userSelectedYear(e);
+  const filterLaunchesByYear = (year) =>
+    launches.filter((launch) => year === launch.launch_year);
 
-    const filterOfYears = (year) =>
-      launches.filter((launch) => year === launch.launch_year);
+  const sortList = (launchesToBeSorted) => {
+    let sortedLaunches = [];
 
-    setFilteredLaunchYears(filterOfYears(e.target.value));
+    if (sortOrder === "ASC") {
+      sortedLaunches = [
+        ...launchesToBeSorted.sort((a, b) =>
+          a.launch_date_unix >= b.launch_date_unix ? 1 : -1
+        ),
+      ];
+    } else {
+      sortedLaunches = [
+        ...launchesToBeSorted.sort((a, b) =>
+          a.launch_date_unix <= b.launch_date_unix ? 1 : -1
+        ),
+      ];
+    }
+    return sortedLaunches;
   };
 
-  // const filterByYear = () => {}
-  // process on Change
-  // set filter year
+  const setUserSelectedYear = (e) => {
+    setCurrentSelectedYear(e.target.value);
+  };
 
-  const updateLaunchYears = (data) => {
+  const createListOfLaunchYears = (data) => {
     const allLaunchYears = data.map((launch) => launch.launch_year);
 
     const launchYears = [...new Set(allLaunchYears)];
 
-    setLaunchYears(launchYears);
+    setYearsOfLaunch(launchYears);
   };
 
   const toggleSortOrder = () => {
@@ -68,36 +85,12 @@ const Main = () => {
   };
 
   useEffect(() => {
-    setLaunches((prevLaunches) => {
-      let sortedLaunches = [];
-
-      if (sortOrder === "ASC") {
-        sortedLaunches = [
-          ...prevLaunches.sort((a, b) =>
-            a.launch_date_unix >= b.launch_date_unix ? 1 : -1
-          ),
-        ];
-      } else {
-        sortedLaunches = [
-          ...prevLaunches.sort((a, b) =>
-            a.launch_date_unix <= b.launch_date_unix ? 1 : -1
-          ),
-        ];
-      }
-      return sortedLaunches;
-    });
-  }, [sortOrder]);
+    filterLaunchesToDisplay();
+  }, [sortOrder, currentSelectedYear]);
 
   useEffect(() => {
     fetchLaunches();
-  }, [fetchLaunches]);
-
-  // const getFilteredlaunches = () =>{
-  //   // should probably use useReducer()
-  //   // look at the chosen filter year
-  //   // return launches for that year
-
-  // }
+  }, []);
 
   return (
     <>
@@ -111,11 +104,11 @@ const Main = () => {
         <div className="main__launchlist-container">
           <LaunchFilters
             toggleSortOrder={toggleSortOrder}
-            launchYears={launchYears}
+            launchYears={yearsOfLaunch}
             sortOrder={sortOrder}
-            launchFilteredYears={launchFilteredYears}
+            userSelectedYear={setUserSelectedYear}
           />
-          <LaunchList launches={launches} />
+          <LaunchList launches={launchesToDisplay} />
         </div>
       </main>
     </>

@@ -6,6 +6,7 @@ const LaunchFilters = ({
   filterByYear,
   launchYears,
   sortOrder,
+  launchFilteredYears,
 }) => {
   const convertButtonSortText = {
     ASC: "Sort Descending",
@@ -17,7 +18,7 @@ const LaunchFilters = ({
       <select
         className="main__launchfilters-year--select"
         defaultValue=""
-        onChange={filterByYear}
+        onChange={launchFilteredYears}
       >
         <option hidden value="">
           Filter by Year

@@ -4,6 +4,15 @@
   padding-right: 1rem;
   text-align: right;
 
+  @media only screen and (max-width: 1300px) {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 0;
+  }
+
   .main__launchitems-container-rocketname {
     font-weight: bold;
     font-size: 1.3rem;

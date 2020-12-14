@@ -98,7 +98,10 @@ const Main = () => {
       <Navbar handleReloadData={handleReloadData} isLoading={isLoading} />
       <main className="main">
         <picture className="main__launch-img">
-          <source srcSet={`${LaunchHome}, ${LaunchHome2x}, ${LaunchHome3x}`} />
+          <source
+            srcSet={`${LaunchHome}, ${LaunchHome2x} 2x, ${LaunchHome3x} 3x`}
+            media="(min-width: 1300px"
+          />
           <img src={LaunchHome} alt="rocket taking off to space" />
         </picture>
 

@@ -29,6 +29,9 @@ const Main = () => {
     }
   }, []);
 
+  const filterLaunchesByYear = (year) =>
+    launches.filter((launch) => year === launch.launch_year);
+
   const filterLaunchesToDisplay = () => {
     const filteredLaunchesByYear =
       currentSelectedYear === "All"
@@ -37,9 +40,6 @@ const Main = () => {
     const sortedLaunchesByYear = sortList(filteredLaunchesByYear);
     setLaunchesToDisplay(sortedLaunchesByYear);
   };
-
-  const filterLaunchesByYear = (year) =>
-    launches.filter((launch) => year === launch.launch_year);
 
   const sortList = (launchesToBeSorted) => {
     let sortedLaunches = [];
@@ -82,6 +82,7 @@ const Main = () => {
 
   const handleReloadData = () => {
     fetchLaunches();
+    setSortOrder("ASC");
   };
 
   useEffect(() => {

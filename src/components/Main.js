@@ -14,7 +14,7 @@ const Main = () => {
   const [launchYears, setLaunchYears] = useState([]);
   const [sortOrder, setSortOrder] = useState("ASC");
   const [selectedYear, setSelectedYear] = useState("");
-  const [filteredYears, setFilteredYears] = useState([]);
+  const [filteredLaunchYears, setFilteredLaunchYears] = useState([]);
   // state for filter year
 
   const fetchLaunches = useCallback(async () => {
@@ -37,11 +37,10 @@ const Main = () => {
   const launchFilteredYears = (e) => {
     userSelectedYear(e);
 
-    const filterOfYears = launches.filter(
-      (launch) => selectedYear === launch.launch_year
-    );
+    const filterOfYears = (year) =>
+      launches.filter((launch) => year === launch.launch_year);
 
-    setFilteredYears(filterOfYears);
+    setFilteredLaunchYears(filterOfYears(e.target.value));
   };
 
   // const filterByYear = () => {}
@@ -117,7 +116,6 @@ const Main = () => {
             launchFilteredYears={launchFilteredYears}
           />
           <LaunchList launches={launches} />
-          {/* getFilteredlaunches() */}
         </div>
       </main>
     </>

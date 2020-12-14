@@ -3,7 +3,6 @@ import Sort from "../css/icons/sort.png";
 
 const LaunchFilters = ({
   toggleSortOrder,
-  filterByYear,
   launchYears,
   sortOrder,
   launchFilteredYears,
